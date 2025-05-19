@@ -16,7 +16,7 @@ class MyCategory extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            'Top 10 $text',
+            text,
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,

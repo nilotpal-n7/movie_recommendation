@@ -1,10 +1,24 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MyHeadder extends StatelessWidget {
+class MyHeadder extends StatefulWidget {
   const MyHeadder({super.key});
 
   @override
+  State<MyHeadder> createState() => _MyHeadderState();
+}
+
+class _MyHeadderState extends State<MyHeadder> {
+  @override
   Widget build(BuildContext context) {
+    bool isDark = true;
+
+    void toggleMode(bool value) {
+      setState(() {
+        isDark = !value;
+      });
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
@@ -34,21 +48,20 @@ class MyHeadder extends StatelessWidget {
               )
             ],
           ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade800,
-              shape: BoxShape.circle,
-            ),
-            child: GestureDetector(
-              onTap: () {},
-              child: Icon(
-                Icons.person,
-                color: Colors.white,
+          Row(
+            children: [
+              Text('Dark'),
+              Transform.scale(
+                scale: 0.7,
+                child: CupertinoSwitch(
+                  value: isDark,
+                  onChanged: toggleMode,
+                  activeTrackColor: Colors.blueAccent.shade400,
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ],  
       ),
     );
   }

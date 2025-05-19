@@ -1,3 +1,8 @@
+import 'package:movie_recommendation/models/genre.dart';
+import 'package:movie_recommendation/models/production_company.dart';
+import 'package:movie_recommendation/models/production_country.dart';
+import 'package:movie_recommendation/models/spoken_language.dart';
+
 class Movie {
   final bool adult;
   final String backdropPath;
@@ -90,81 +95,35 @@ class Movie {
       voteCount: json['vote_count'] ?? 0,
     );
   }
-}
 
-class Genre {
-  final int id;
-  final String name;
-
-  Genre({
-    required this.id,
-    required this.name,
-  });
-
-  factory Genre.fromJson(Map<String, dynamic> json) {
-    return Genre(
+  factory Movie.fromSummaryJson(Map<String, dynamic> json) {
+    return Movie(
+      adult: json['adult'] ?? false,
+      backdropPath: json['backdrop_path'] ?? '',
+      budget: 0,
+      genres: [],
+      homepage: '',
       id: json['id'],
-      name: json['name'],
+      imdbId: '',
+      originCountry: List<String>.from(json['origin_country'] ?? []),
+      originalLanguage: json['original_language'] ?? '',
+      originalTitle: json['original_title'] ?? '',
+      overview: json['overview'] ?? '',
+      popularity: (json['popularity'] ?? 0).toDouble(),
+      posterPath: json['poster_path'] ?? '',
+      productionCompanies: [],
+      productionCountries: [],
+      releaseDate: json['release_date'] ?? '',
+      revenue: 0,
+      runtime: 0,
+      spokenLanguages: [],
+      status: '',
+      tagline: '',
+      title: json['title'] ?? '',
+      video: json['video'] ?? false,
+      voteAverage: (json['vote_average'] ?? 0).toDouble(),
+      voteCount: json['vote_count'] ?? 0,
     );
   }
-}
 
-class ProductionCompany {
-  final int id;
-  final String? logoPath;
-  final String name;
-  final String originCountry;
-
-  ProductionCompany({
-    required this.id,
-    required this.logoPath,
-    required this.name,
-    required this.originCountry,
-  });
-
-  factory ProductionCompany.fromJson(Map<String, dynamic> json) {
-    return ProductionCompany(
-      id: json['id'],
-      logoPath: json['logo_path'],
-      name: json['name'],
-      originCountry: json['origin_country'],
-    );
-  }
-}
-
-class ProductionCountry {
-  final String iso3166_1;
-  final String name;
-
-  ProductionCountry({
-    required this.iso3166_1,
-    required this.name,
-  });
-
-  factory ProductionCountry.fromJson(Map<String, dynamic> json) {
-    return ProductionCountry(
-      iso3166_1: json['iso_3166_1'],
-      name: json['name'],
-    );
-  }
-}
-
-class SpokenLanguage {
-  final String englishName;
-  final String iso639_1;
-  final String name;
-
-  SpokenLanguage({
-    required this.englishName,
-    required this.iso639_1,
-    required this.name,
-  });
-
-  factory SpokenLanguage.fromJson(Map<String, dynamic> json) {
-    return SpokenLanguage(
-      englishName: json['english_name'],
-      iso639_1: json['iso_639_1'],
-      name: json['name'],
-    );
-  }
 }

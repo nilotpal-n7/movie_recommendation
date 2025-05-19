@@ -4,8 +4,13 @@ import 'package:movie_recommendation/services/movie_service.dart';
 
 class MovieDetailPage extends StatefulWidget {
   final int movieId;
+  final String category;
 
-  const MovieDetailPage({super.key, required this.movieId});
+  const MovieDetailPage({
+    super.key,
+    required this.movieId,
+    required this.category
+  });
 
   @override
   State<MovieDetailPage> createState() => _MovieDetailPageState();
@@ -18,13 +23,13 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   @override
   void initState() {
     super.initState();
-    _movieFuture = service.fetchMovieDetails(widget.movieId);
+    _movieFuture = service.fetchMovieDetails(widget.category, widget.movieId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Movie Details')),
+      backgroundColor: Colors.black,
       body: FutureBuilder<Movie>(
         future: _movieFuture,
         builder: (context, snapshot) {
@@ -42,96 +47,99 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           final countries = movie.productionCountries.map((c) => c.name).join(', ');
           final companies = movie.productionCompanies.map((p) => p.name).join(', ');
 
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (movie.posterPath.isNotEmpty)
-                  Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                        height: 350,
+          return SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (movie.posterPath.isNotEmpty)
+                    Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                          //height: 350,
+                          width: double.infinity,
+                        ),
                       ),
                     ),
+                  const SizedBox(height: 16),
+            
+                  Text(
+                    movie.title,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
                   ),
-                const SizedBox(height: 16),
-
-                Text(
-                  movie.title,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                if (movie.tagline.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: Text(
-                      movie.tagline,
-                      style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey[600]),
+                  if (movie.tagline.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Text(
+                        movie.tagline,
+                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey[600]),
+                      ),
                     ),
+                  const SizedBox(height: 12),
+            
+                  Row(
+                    children: [
+                      Icon(Icons.calendar_today_outlined, size: 18, color: Colors.grey[700]),
+                      const SizedBox(width: 6),
+                      Text('Release: ${movie.releaseDate}'),
+                      const SizedBox(width: 16),
+                      Icon(Icons.access_time, size: 18, color: Colors.grey[700]),
+                      const SizedBox(width: 6),
+                      Text('${movie.runtime} min'),
+                    ],
                   ),
-                const SizedBox(height: 12),
-
-                Row(
-                  children: [
-                    Icon(Icons.calendar_today_outlined, size: 18, color: Colors.grey[700]),
-                    const SizedBox(width: 6),
-                    Text('Release: ${movie.releaseDate}'),
-                    const SizedBox(width: 16),
-                    Icon(Icons.access_time, size: 18, color: Colors.grey[700]),
-                    const SizedBox(width: 6),
-                    Text('${movie.runtime} min'),
-                  ],
-                ),
-                const SizedBox(height: 10),
-
-                Wrap(
-                  spacing: 8,
-                  children: movie.genres
-                      .map((genre) => Chip(
-                            label: Text(genre.name),
-                            backgroundColor: Colors.blueGrey[100],
-                          ))
-                      .toList(),
-                ),
-
-                const SizedBox(height: 16),
-                _buildSectionTitle(context, 'Overview'),
-                Text(movie.overview),
-
-                const SizedBox(height: 16),
-                _buildSectionTitle(context, 'Language(s)'),
-                Text(languages),
-
-                const SizedBox(height: 16),
-                _buildSectionTitle(context, 'Production Countries'),
-                Text(countries),
-
-                const SizedBox(height: 16),
-                _buildSectionTitle(context, 'Production Companies'),
-                Text(companies),
-
-                const SizedBox(height: 16),
-                _buildSectionTitle(context, 'IMDb ID'),
-                Text(movie.imdbId),
-
-                const SizedBox(height: 16),
-                _buildSectionTitle(context, 'Budget & Revenue'),
-                Text('\$${movie.budget.toString()} budget, \$${movie.revenue.toString()} revenue'),
-
-                const SizedBox(height: 16),
-                _buildSectionTitle(context, 'Rating'),
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.amber),
-                    const SizedBox(width: 6),
-                    Text('${movie.voteAverage} (${movie.voteCount} votes)'),
-                  ],
-                ),
-
-                const SizedBox(height: 30),
-              ],
+                  const SizedBox(height: 10),
+            
+                  Wrap(
+                    spacing: 8,
+                    children: movie.genres
+                        .map((genre) => Chip(
+                              label: Text(genre.name),
+                              backgroundColor: Colors.blueGrey[100],
+                            ))
+                        .toList(),
+                  ),
+            
+                  const SizedBox(height: 16),
+                  _buildSectionTitle(context, 'Overview'),
+                  Text(movie.overview),
+            
+                  const SizedBox(height: 16),
+                  _buildSectionTitle(context, 'Language(s)'),
+                  Text(languages),
+            
+                  const SizedBox(height: 16),
+                  _buildSectionTitle(context, 'Production Countries'),
+                  Text(countries),
+            
+                  const SizedBox(height: 16),
+                  _buildSectionTitle(context, 'Production Companies'),
+                  Text(companies),
+            
+                  const SizedBox(height: 16),
+                  _buildSectionTitle(context, 'IMDb ID'),
+                  Text(movie.imdbId),
+            
+                  const SizedBox(height: 16),
+                  _buildSectionTitle(context, 'Budget & Revenue'),
+                  Text('\$${movie.budget.toString()} budget, \$${movie.revenue.toString()} revenue'),
+            
+                  const SizedBox(height: 16),
+                  _buildSectionTitle(context, 'Rating'),
+                  Row(
+                    children: [
+                      Icon(Icons.star, color: Colors.amber),
+                      const SizedBox(width: 6),
+                      Text('${movie.voteAverage} (${movie.voteCount} votes)'),
+                    ],
+                  ),
+            
+                  const SizedBox(height: 30),
+                ],
+              ),
             ),
           );
         },

@@ -40,6 +40,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   carousel_slider: ^5.0.0
   tmdb_api: ^2.2.3
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
