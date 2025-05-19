@@ -29,8 +29,10 @@ class Movie {
   final bool video;
   final double voteAverage;
   final int voteCount;
+  final String mediaType;
 
   Movie({
+    required this.mediaType,
     required this.adult,
     required this.backdropPath,
     required this.budget,
@@ -60,6 +62,7 @@ class Movie {
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
+      mediaType: json['media_type'] ?? 'movie',
       adult: json['adult'] ?? false,
       backdropPath: json['backdrop_path'] ?? '',
       budget: json['budget'] ?? 0,
@@ -98,6 +101,7 @@ class Movie {
 
   factory Movie.fromSummaryJson(Map<String, dynamic> json) {
     return Movie(
+      mediaType: json['media_type'] ?? 'movie',
       adult: json['adult'] ?? false,
       backdropPath: json['backdrop_path'] ?? '',
       budget: 0,

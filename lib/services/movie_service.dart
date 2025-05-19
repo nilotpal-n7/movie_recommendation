@@ -71,4 +71,18 @@ class MovieService {
       throw Exception('Failed to fetch movies by genre');
     }
   }
+
+  Future<List<Movie>> searchMovies(String query) async {
+    final url = Uri.parse('$_baseUrl/search/search?name=${Uri.encodeComponent(query)}');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return (data['results'] as List)
+          .map((json) => Movie.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to search movies');
+    }
+  }
 }

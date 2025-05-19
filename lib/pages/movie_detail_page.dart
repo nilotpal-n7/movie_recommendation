@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_recommendation/models/movie.dart';
+import 'package:movie_recommendation/providers/favorite_provider.dart';
 import 'package:movie_recommendation/services/movie_service.dart';
+import 'package:provider/provider.dart';
 
 class MovieDetailPage extends StatefulWidget {
   final int movieId;
@@ -28,8 +30,9 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isFav = context.watch<FavoriteProvider>().isFavorite(widget.movieId, widget.category);
+
     return Scaffold(
-      backgroundColor: Colors.black,
       body: FutureBuilder<Movie>(
         future: _movieFuture,
         builder: (context, snapshot) {
@@ -42,7 +45,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           }
 
           final movie = snapshot.data!;
-          final genres = movie.genres.map((g) => g.name).join(', ');
           final languages = movie.spokenLanguages.map((l) => l.englishName).join(', ');
           final countries = movie.productionCountries.map((c) => c.name).join(', ');
           final companies = movie.productionCompanies.map((p) => p.name).join(', ');
@@ -70,14 +72,44 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     movie.title,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  if (movie.tagline.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: Text(
-                        movie.tagline,
-                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey[600]),
-                      ),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (movie.tagline.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            movie.tagline,
+                            style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey[600]),
+                          ),
+                        ),
+                        
+                      IconButton(
+                        icon: Icon(
+                          Icons.favorite,
+                          color: isFav ? Colors.red : Colors.white,
+                        ),
+                        onPressed: () {
+                          final provider = context.read<FavoriteProvider>();
+                          
+                          if (isFav) {
+                            final index = provider.favourite.indexWhere((item) =>
+                                item['id'] == movie.id && item['media_type'] == widget.category);
+                            if (index != -1) provider.removeMovieAt(index);
+                            
+                          } else {
+                            provider.addMovie({
+                              'id': movie.id,
+                              'title': movie.title,
+                              'tagline': movie.tagline,
+                              'media_type': widget.category,
+                              'posterPath': movie.posterPath,
+                            });
+                          }
+                        },
+                      )
+                    ],
+                  ),
                   const SizedBox(height: 12),
             
                   Row(
@@ -96,11 +128,11 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                   Wrap(
                     spacing: 8,
                     children: movie.genres
-                        .map((genre) => Chip(
-                              label: Text(genre.name),
-                              backgroundColor: Colors.blueGrey[100],
-                            ))
-                        .toList(),
+                      .map((genre) => Chip(
+                          label: Text(genre.name),
+                          backgroundColor: Colors.blueGrey[100],
+                        ))
+                      .toList(),
                   ),
             
                   const SizedBox(height: 16),

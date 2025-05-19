@@ -4,6 +4,8 @@ import 'package:movie_recommendation/components/my_carousel.dart';
 import 'package:movie_recommendation/components/my_category.dart';
 import 'package:movie_recommendation/components/my_headder.dart';
 import 'package:movie_recommendation/components/my_list_view.dart';
+import 'package:movie_recommendation/pages/favourite_page.dart';
+import 'package:movie_recommendation/pages/search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,42 +16,62 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+  TextEditingController controller = TextEditingController();
+
+  late final List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _pages = [
+      // Home tab
+      CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: MyHeadder()),
+          SliverToBoxAdapter(child: MyCarousel(category: 'movie')),
+          SliverToBoxAdapter(child: MyCategory(text: 'Trending Movies')),
+          SliverToBoxAdapter(child: MyListView(category: 'movie')),
+          SliverToBoxAdapter(child: MyCategory(text: 'Trending TV Shows')),
+          SliverToBoxAdapter(child: MyListView(category: 'tv')),
+          SliverToBoxAdapter(child: MyCategory(text: 'Trending Animes')),
+          SliverToBoxAdapter(child: MyListView(category: 'anime', isAnime: true)),
+        ],
+      ),
+
+      // Search tab
+      Column(
+        children: [
+          MyHeadder(),
+          const Expanded(child: SearchPage()),
+        ],
+      ),
+
+      // Favorites tab
+      Column(
+        children: [
+          MyHeadder(),
+          const Expanded(child: FavouritePage()),
+        ],
+      ),
+    ];
+  }
 
   void _onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    setState(() => _currentIndex = index);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       bottomNavigationBar: MyBottomNavBar(
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
       ),
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // HEADER
-            SliverToBoxAdapter(child: MyHeadder()),
-
-            // CAROUSEL
-            SliverToBoxAdapter(child: MyCarousel(category: 'movie')),
-
-            // MOVIES
-            SliverToBoxAdapter(child: MyCategory(text: 'Trending Movies')),
-            SliverToBoxAdapter(child: MyListView(category: 'movie')),
-
-            // TV SHOWS
-            SliverToBoxAdapter(child: MyCategory(text: 'Trending TV Shows')),
-            SliverToBoxAdapter(child: MyListView(category: 'tv')),
-
-            // ANIME
-            SliverToBoxAdapter(child: MyCategory(text: 'Trending Animes')),
-            SliverToBoxAdapter(child: MyListView(category: 'anime', isAnime: true)),
-          ],
+        child: IndexedStack(
+          index: _currentIndex,
+          children: _pages,
         ),
       ),
     );

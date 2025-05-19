@@ -10,6 +10,11 @@ class FavoriteProvider extends ChangeNotifier {
     loadFav();
   }
 
+  bool isFavorite(int id, String mediaType) {
+    return _favourite.any((item) =>
+      item['id'] == id && item['media_type'] == mediaType);
+  }
+
   void addMovie(Map<String, dynamic> movie) {
     _favourite.insert(0, movie);
     StorageService.saveStringList('favourite', _favourite);
