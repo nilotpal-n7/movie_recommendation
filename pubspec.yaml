@@ -38,6 +38,8 @@ dependencies:
   provider: ^6.1.5
   cached_network_image: ^3.4.1
   flutter_dotenv: ^5.2.1
+  carousel_slider: ^5.0.0
+  tmdb_api: ^2.2.3
 
 dev_dependencies:
   flutter_test:
