@@ -117,9 +117,25 @@ class _SearchPageState extends State<SearchPage> {
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 2,
                                             ),
+
+                                            const SizedBox(height: 10),
       
                                             Text(
                                               movie.overview,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                color: Theme.of(context).colorScheme.primary,
+                                                fontSize: 12,
+                                              ),
+                                              softWrap: true,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                            ),
+
+                                            const SizedBox(height: 10),
+
+                                            Text(
+                                              '⭐ ${movie.voteAverage}',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.normal,
                                                 color: Theme.of(context).colorScheme.primary,
