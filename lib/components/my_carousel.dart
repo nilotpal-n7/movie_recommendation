@@ -26,7 +26,6 @@ class _MyCarouselState extends State<MyCarousel> {
   Future<void> loadMovies() async {
     try {
       final fetched = await service.fetchPopularMovies(widget.category);
-      print('Fetched $fetched');
       setState(() => _movies = fetched.take(5).toList()); // Only top 5
     } catch (e) {
       debugPrint('Error fetching movies: $e');
