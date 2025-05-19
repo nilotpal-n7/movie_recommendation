@@ -76,7 +76,6 @@ class MovieService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      print("Search response: $data"); 
       final List results = data['results'];
 
       return (results)

@@ -29,7 +29,6 @@ class _SearchPageState extends State<SearchPage> {
     setState(() => _isLoading = true);
     try {
       final results = await _service.searchMovies(query);
-      print('kjgsckjjvkhq $results');
       setState(() {
          final filtered = results
       .where((movie) => movie.title.trim().isNotEmpty)
