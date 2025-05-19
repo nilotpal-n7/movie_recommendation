@@ -57,14 +57,14 @@ class MovieService {
     }
   }
 
-  Future<List<Movie>> getMoviesByGenre(String text, String genre) async {
-    final url = Uri.parse('$_baseUrl/$text/genre?name=${Uri.encodeComponent(genre)}');
+  Future<List<Movie>> getMoviesByGenre(String text, int genre) async {
+    final url = Uri.parse('$_baseUrl/$text/genre?genreId=$genre}');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
       final List results = json['results'];
-      return results.map((movieJson) => Movie.fromJson(movieJson)).toList();
+      return results.map((movieJson) => Movie.fromSummaryJson(movieJson)).toList();
     } else {
       throw Exception('Failed to fetch movies by genre');
     }

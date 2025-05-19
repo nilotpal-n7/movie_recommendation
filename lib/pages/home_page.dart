@@ -4,6 +4,7 @@ import 'package:movie_recommendation/components/my_carousel.dart';
 import 'package:movie_recommendation/components/my_category.dart';
 import 'package:movie_recommendation/components/my_headder.dart';
 import 'package:movie_recommendation/components/my_list_view.dart';
+import 'package:movie_recommendation/components/my_listview_genre.dart';
 import 'package:movie_recommendation/pages/favourite_page.dart';
 import 'package:movie_recommendation/pages/search_page.dart';
 
@@ -32,10 +33,14 @@ class _HomePageState extends State<HomePage> {
           SliverToBoxAdapter(child: MyCarousel(category: 'movie')),
           SliverToBoxAdapter(child: MyCategory(text: 'Trending Movies')),
           SliverToBoxAdapter(child: MyListView(category: 'movie')),
-          SliverToBoxAdapter(child: MyCategory(text: 'Trending TV Shows')),
+          SliverToBoxAdapter(child: MyCategory(text: 'Popular TV Shows')),
           SliverToBoxAdapter(child: MyListView(category: 'tv')),
-          SliverToBoxAdapter(child: MyCategory(text: 'Trending Animes')),
+          SliverToBoxAdapter(child: MyCategory(text: 'New Animes')),
           SliverToBoxAdapter(child: MyListView(category: 'anime', isAnime: true)),
+          SliverToBoxAdapter(child: MyCategory(text: 'Fantasy')),
+          SliverToBoxAdapter(child: MyListViewGenre(category: 'movie', genreId: 12)),
+          SliverToBoxAdapter(child: MyCategory(text: 'Sci-Fi')),
+          SliverToBoxAdapter(child: MyListViewGenre(category: 'movie', genreId: 878)),
         ],
       ),
 

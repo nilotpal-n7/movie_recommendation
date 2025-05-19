@@ -51,7 +51,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 
           return SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -67,23 +67,17 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                       ),
                     ),
                   const SizedBox(height: 16),
-            
-                  Text(
-                    movie.title,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
-                  ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      if (movie.tagline.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
+                        Expanded(
                           child: Text(
-                            movie.tagline,
-                            style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey[600]),
+                            movie.title,
+                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                           ),
                         ),
-                        
                       IconButton(
                         icon: Icon(
                           Icons.favorite,
@@ -110,6 +104,14 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                       )
                     ],
                   ),
+                  if (movie.tagline.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Text(
+                        movie.tagline,
+                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey[600]),
+                      ),
+                    ),
                   const SizedBox(height: 12),
             
                   Row(
