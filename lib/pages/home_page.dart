@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           SliverToBoxAdapter(child: MyCategory(text: 'New Animes')),
           SliverToBoxAdapter(child: MyListView(category: 'anime', isAnime: true)),
           SliverToBoxAdapter(child: MyCategory(text: 'Fantasy')),
-          SliverToBoxAdapter(child: MyListViewGenre(category: 'movie', genreId: 12)),
+          SliverToBoxAdapter(child: MyListViewGenre(category: 'movie', genreId: 14)),
           SliverToBoxAdapter(child: MyCategory(text: 'Sci-Fi')),
           SliverToBoxAdapter(child: MyListViewGenre(category: 'movie', genreId: 878)),
         ],

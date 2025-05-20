@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:movie_recommendation/models/movie.dart';
@@ -26,7 +28,10 @@ class _MyCarouselState extends State<MyCarousel> {
   Future<void> loadMovies() async {
     try {
       final fetched = await service.fetchPopularMovies(widget.category);
-      setState(() => _movies = fetched.take(5).toList()); // Only top 5
+      fetched.shuffle();
+      setState(() {
+        _movies = fetched.take(5).toList();
+      });
     } catch (e) {
       debugPrint('Error fetching movies: $e');
     }

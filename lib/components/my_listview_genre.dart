@@ -33,6 +33,7 @@ class _MyListViewGenreState extends State<MyListViewGenre> {
   Future<void> loadMovies() async {
     try {
       final fetched = await service.getMoviesByGenre(widget.category, widget.genreId);
+      fetched.shuffle();
       setState(() => _movies = fetched.take(10).toList()); // Only top 5
     } catch (e) {
       debugPrint('Error fetching movies: $e');
